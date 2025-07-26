@@ -1,0 +1,42 @@
+# Blender Asset Manager C++ TODO List
+# Author: KleaSCM
+# Email: KleaSCM@gmail.com
+# Description: Modular, tickable TODO list for project features and architecture
+
+## ✅ Completed
+- [x] Fast asset indexing and scanning (C++)
+- [x] Asset categorization and statistics
+- [x] Asset search (by name, type, category, pattern)
+- [x] Material presets (info only)
+- [x] Supported formats listing
+- [x] Modular, professional codebase
+- [x] Clean, DRY main.cpp (no duplicate logic)
+
+## ⏳ Pending / In Progress
+- [ ] Asset validation module (AssetValidator)
+    - [ ] Check for missing textures, file integrity, empty files
+    - [ ] Report issues/warnings per asset
+- [ ] Model importing module (ImportManager)
+    - [ ] Import with options (location, rotation, scale, merge, auto-smooth, etc.)
+    - [ ] Bulk import in patterns (grid, circle, line, random)
+    - [ ] Linking vs. importing assets
+- [ ] Material handling module (MaterialManager)
+    - [ ] Material creation (PBR, quick setup, auto-assign)
+    - [ ] Texture loading and assignment
+    - [ ] PBR material creation with multiple maps
+- [ ] Import history module (ImportHistory)
+    - [ ] Track imported assets, undo/clear
+- [ ] FFI/Python bridge (PythonBridge)
+    - [ ] Expose C++ core to Python (ctypes/pybind11)
+    - [ ] Blender context management (preserve selection, etc.)
+- [ ] Auditing, validation, and test scripts (Tests/)
+    - [ ] Universal asset audit
+    - [ ] Unit/integration tests for all modules
+- [ ] Utilities/helpers (FileUtils, etc.)
+    - [ ] Path helpers, legacy compatibility
+- [ ] Documentation (Docs/)
+    - [ ] Architecture diagrams, module docs, usage examples
+
+---
+
+# To tick off a task, change [ ] to [x] and move it to the Completed section above.
