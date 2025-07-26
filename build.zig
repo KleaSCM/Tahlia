@@ -22,7 +22,7 @@ pub fn build(b: *std.Build) void {
     build_step.dependOn(&compile_step.step);
 
     // Add ImportManager test build (using simple test harness)
-    const import_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "src/core/import_manager.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "Tests/test_import_manager.cpp", "-o", "zig-out/bin/test_import_manager" });
+    const import_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "src/core/import_manager.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/material_manager.cpp", "Tests/test_import_manager.cpp", "-o", "zig-out/bin/test_import_manager" });
     import_test_compile.step.dependOn(&mkdir_step.step);
 
     const import_test_build_step = b.step("build-test-import", "Build the import manager tests");

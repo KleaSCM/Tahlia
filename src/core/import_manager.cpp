@@ -53,12 +53,14 @@ void ImportManager::setAssetManager(std::shared_ptr<AssetManager> manager) {
 }
 
 ImportResult ImportManager::importAsset(const std::string& asset_path, const ImportOptions& options) {
-    /*
-     * Full implementation: Imports or links an asset using Blender subprocess.
-     * - If linking, generates a Python script to link the asset into the scene/collection.
-     * - If importing, generates a Python script to append/import the asset.
-     * - Calls Blender in background mode and parses the output for results.
-     * - Returns a detailed ImportResult with real results.
+    /**
+     * @brief Imports or links an asset using Blender subprocess, applying all ImportOptions.
+     *        Generates a Python script that sets location, rotation, scale, merge, auto-smooth, etc.
+     *        Handles both linking and importing, with robust error handling and detailed reporting.
+     *
+     * @param asset_path Path to the asset file to import or link.
+     * @param options ImportOptions struct with all import parameters.
+     * @return ImportResult with success status, message, and imported object names.
      */
     ImportResult result;
     result.asset_path = asset_path;
@@ -69,91 +71,68 @@ ImportResult ImportManager::importAsset(const std::string& asset_path, const Imp
         return result;
     }
     std::filesystem::path path(asset_path);
-    if (options.link_instead_of_import) {
-        // Linking: generate Python script to link the asset
-        std::string py_script =
-            "import bpy\n"
-            "import sys\n"
-            "try:\n"
-            "    with bpy.data.libraries.load(sys.argv[-1], link=True) as (data_from, data_to):\n"
-            "        if data_from.collections:\n"
-            "            data_to.collections = [data_from.collections[0]]\n"
-            "        elif data_from.objects:\n"
-            "            data_to.objects = [data_from.objects[0]]\n"
-            "    for c in data_to.collections:\n"
-            "        bpy.context.scene.collection.children.link(c)\n"
-            "    print('LINKED:', [c.name for c in data_to.collections])\n"
-            "    print('SUCCESS')\n"
-            "except Exception as e:\n"
-            "    print('ERROR:', str(e))\n";
-        char tmp_py_name[L_tmpnam];
-        std::tmpnam(tmp_py_name);
-        std::ofstream py_file(tmp_py_name);
-        py_file << py_script;
-        py_file.close();
-        std::string cmd = "blender --background --factory-startup --python " + std::string(tmp_py_name) + " -- " + asset_path + " 2>&1";
-        std::array<char, 256> buffer;
-        std::string output;
-        std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
-        if (!pipe) {
-            result.message = "Failed to launch Blender for linking.";
-            return result;
-        }
-        while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-            output += buffer.data();
-        }
-        std::remove(tmp_py_name);
-        if (output.find("SUCCESS") != std::string::npos) {
-            result.success = true;
-            result.message = "Asset linked successfully.";
-            // Parse linked collection/object names
-            size_t pos = output.find("LINKED:");
-            if (pos != std::string::npos) {
-                size_t start = output.find('[', pos);
-                size_t end = output.find(']', pos);
-                if (start != std::string::npos && end != std::string::npos && end > start) {
-                    std::string names = output.substr(start + 1, end - start - 1);
-                    std::istringstream iss(names);
-                    std::string name;
-                    while (std::getline(iss, name, ',')) {
-                        name.erase(std::remove(name.begin(), name.end(), '\''), name.end());
-                        name.erase(std::remove(name.begin(), name.end(), ' '), name.end());
-                        if (!name.empty()) result.imported_objects.push_back(name);
-                    }
-                }
-            }
-        } else {
-            result.message = output;
-        }
-        return result;
-    }
-    // Importing: generate Python script to append/import the asset
-    std::string py_script =
-        "import bpy\n"
-        "import sys\n"
-        "try:\n"
-        "    with bpy.data.libraries.load(sys.argv[-1], link=False) as (data_from, data_to):\n"
-        "        if data_from.collections:\n"
-        "            data_to.collections = [data_from.collections[0]]\n"
-        "        elif data_from.objects:\n"
-        "            data_to.objects = [data_from.objects[0]]\n"
-        "    for c in data_to.collections:\n"
-        "        bpy.context.scene.collection.children.link(c)\n"
-        "    print('IMPORTED:', [c.name for c in data_to.collections])\n"
-        "    print('SUCCESS')\n"
-        "except Exception as e:\n"
-        "    print('ERROR:', str(e))\n";
+    // Helper lambdas for tuple to string
+    auto tuple3_to_str = [](const std::tuple<float, float, float>& t) {
+        std::ostringstream oss;
+        oss << std::get<0>(t) << ", " << std::get<1>(t) << ", " << std::get<2>(t);
+        return oss.str();
+    };
+    // Prepare Python script with all options
+    std::ostringstream py_script;
+    py_script << "import bpy\n"
+              << "import sys\n"
+              << "import mathutils\n"
+              << "try:\n"
+              << "    asset_path = sys.argv[-1]\n"
+              << "    with bpy.data.libraries.load(asset_path, link=" << (options.link_instead_of_import ? "True" : "False") << ") as (data_from, data_to):\n"
+              << "        if data_from.collections:\n"
+              << "            data_to.collections = [data_from.collections[0]]\n"
+              << "        elif data_from.objects:\n"
+              << "            data_to.objects = [data_from.objects[0]]\n"
+              << "    imported = []\n"
+              << "    for c in data_to.collections:\n"
+              << "        bpy.context.scene.collection.children.link(c)\n"
+              << "        for obj in c.objects:\n"
+              << "            imported.append(obj)\n"
+              << "    for obj in data_to.objects:\n"
+              << "        bpy.context.scene.collection.objects.link(obj)\n"
+              << "        imported.append(obj)\n"
+              << "    # Apply transform and options\n"
+              << "    for obj in imported:\n"
+              << "        obj.location = mathutils.Vector([" << tuple3_to_str(options.location) << "])\n"
+              << "        obj.rotation_euler = mathutils.Vector([" << tuple3_to_str(options.rotation) << "])\n"
+              << "        obj.scale = mathutils.Vector([" << tuple3_to_str(options.scale) << "])\n"
+              << "        if " << (options.auto_smooth ? "True" : "False") << ":\n"
+              << "            if hasattr(obj.data, 'use_auto_smooth'):\n"
+              << "                obj.data.use_auto_smooth = True\n"
+              << "        if 'MESH' in obj.type and " << (options.merge_objects ? "True" : "False") << ":\n"
+              << "            bpy.ops.object.select_all(action='DESELECT')\n"
+              << "            obj.select_set(True)\n"
+              << "            bpy.context.view_layer.objects.active = obj\n"
+              << "    if " << (options.merge_objects ? "True" : "False") << ":\n"
+              << "        bpy.ops.object.join()\n"
+              << "    if '" << options.collection_name << "':\n"
+              << "        if '" << options.collection_name << "' not in bpy.data.collections:\n"
+              << "            new_coll = bpy.data.collections.new('" << options.collection_name << "')\n"
+              << "            bpy.context.scene.collection.children.link(new_coll)\n"
+              << "        for obj in imported:\n"
+              << "            bpy.data.collections['" << options.collection_name << "'].objects.link(obj)\n"
+              << "    print('IMPORTED:' if not " << (options.link_instead_of_import ? "True" : "False") << " else 'LINKED:', [o.name for o in imported])\n"
+              << "    print('SUCCESS')\n"
+              << "except Exception as e:\n"
+              << "    print('ERROR:', str(e))\n";
+    // Write script to temp file
     char tmp_py_name[L_tmpnam];
     std::tmpnam(tmp_py_name);
     std::ofstream py_file(tmp_py_name);
-    py_file << py_script;
+    py_file << py_script.str();
     py_file.close();
     std::string cmd = "blender --background --factory-startup --python " + std::string(tmp_py_name) + " -- " + asset_path + " 2>&1";
     std::array<char, 256> buffer;
     std::string output;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe) {
-        result.message = "Failed to launch Blender for import.";
+        result.message = "Failed to launch Blender for import/link.";
         return result;
     }
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
@@ -162,9 +141,9 @@ ImportResult ImportManager::importAsset(const std::string& asset_path, const Imp
     std::remove(tmp_py_name);
     if (output.find("SUCCESS") != std::string::npos) {
         result.success = true;
-        result.message = "Asset imported successfully.";
-        // Parse imported collection/object names
-        size_t pos = output.find("IMPORTED:");
+        result.message = options.link_instead_of_import ? "Asset linked successfully." : "Asset imported successfully.";
+        // Parse imported/linked object names
+        size_t pos = output.find(options.link_instead_of_import ? "LINKED:" : "IMPORTED:");
         if (pos != std::string::npos) {
             size_t start = output.find('[', pos);
             size_t end = output.find(']', pos);

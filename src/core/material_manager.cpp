@@ -77,7 +77,7 @@ MaterialResult MaterialManager::createMaterial(const MaterialOptions& options) {
     // Prepare options for Python module
     std::string options_json = "{";
     options_json += "\"name\":\"" + options.name + "\",";
-    options_json += "\"use_nodes\":" + (options.use_nodes ? "true" : "false") + ",";
+    options_json += "\"use_nodes\":" + std::string(options.use_nodes ? "true" : "false") + ",";
     options_json += "\"metallic\":" + std::to_string(options.metallic) + ",";
     options_json += "\"roughness\":" + std::to_string(options.roughness) + ",";
     options_json += "\"specular\":" + std::to_string(options.specular) + ",";
@@ -88,8 +88,8 @@ MaterialResult MaterialManager::createMaterial(const MaterialOptions& options) {
     options_json += "\"transmission_roughness\":" + std::to_string(options.transmission_roughness) + ",";
     options_json += "\"emission_strength\":" + std::to_string(options.emission_strength) + ",";
     options_json += "\"alpha\":" + std::to_string(options.alpha) + ",";
-    options_json += "\"backface_culling\":" + (options.backface_culling ? "true" : "false") + ",";
-    options_json += "\"blend_method\":" + (options.blend_method ? "true" : "false");
+    options_json += "\"backface_culling\":" + std::string(options.backface_culling ? "true" : "false") + ",";
+    options_json += "\"blend_method\":" + std::string(options.blend_method ? "true" : "false");
     
     // Add texture paths if they exist
     if (!options.albedo_texture.empty()) {
@@ -130,8 +130,7 @@ MaterialResult MaterialManager::createMaterial(const MaterialOptions& options) {
         output += buffer.data();
     }
 
-    // Clean up temporary file
-    std::remove(tmp_py_name);
+    // No temporary file to clean up (using direct Python module call)
 
     // Parse output
     if (output.find("SUCCESS") != std::string::npos) {
@@ -213,8 +212,7 @@ TextureInfo MaterialManager::loadTexture(const std::string& texture_path) {
         }
     }
 
-    // Clean up temporary file
-    std::remove(tmp_py_name);
+    // No temporary file to clean up (using direct Python module call)
 
     // Parse output
     if (output.find("SUCCESS") != std::string::npos) {
@@ -269,8 +267,7 @@ MaterialResult MaterialManager::assignTexture(const std::string& material_name, 
         output += buffer.data();
     }
 
-    // Clean up temporary file
-    std::remove(tmp_py_name);
+    // No temporary file to clean up (using direct Python module call)
 
     // Parse output
     if (output.find("SUCCESS") != std::string::npos) {
@@ -438,8 +435,7 @@ MaterialResult MaterialManager::validateMaterial(const std::string& material_nam
         output += buffer.data();
     }
 
-    // Clean up temporary file
-    std::remove(tmp_py_name);
+    // No temporary file to clean up (using direct Python module call)
 
     // Parse output
     if (output.find("SUCCESS") != std::string::npos) {
