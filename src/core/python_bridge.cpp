@@ -262,8 +262,8 @@ BlenderContext PythonBridge::captureContext() const {
             Py_DECREF(func);
             Py_DECREF(module);
 #endif
-        } catch (const std::exception& e) {
-            handlePythonException(e);
+    } catch (const std::exception& e) {
+        handlePythonException(e);
             // Fall through to fallback behavior
         }
     }
@@ -323,16 +323,16 @@ bool PythonBridge::restoreContext(const BlenderContext& context) {
             
             // Add active object
             PyDict_SetItemString(context_dict, "active_object", PyUnicode_FromString(context.active_object.c_str()));
-            
+        
             // Add view layer
             PyDict_SetItemString(context_dict, "view_layer", PyUnicode_FromString(context.view_layer.c_str()));
-            
+        
             // Add mode
             PyDict_SetItemString(context_dict, "mode", PyUnicode_FromString(context.mode.c_str()));
-            
+        
             // Add viewport settings
             PyObject* viewport_settings = PyDict_New();
-            for (const auto& setting : context.viewport_settings) {
+        for (const auto& setting : context.viewport_settings) {
                 PyDict_SetItemString(viewport_settings, 
                                    setting.first.c_str(), 
                                    PyUnicode_FromString(setting.second.c_str()));
@@ -369,10 +369,10 @@ bool PythonBridge::restoreContext(const BlenderContext& context) {
             
             return success;
 #endif
-        } catch (const std::exception& e) {
-            handlePythonException(e);
+    } catch (const std::exception& e) {
+        handlePythonException(e);
             // Fall through to fallback behavior
-        }
+    }
     }
     
     // Fallback behavior - always succeed without Python
