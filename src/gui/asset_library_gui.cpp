@@ -1,9 +1,11 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: asset_library_gui.cpp
-Description: Implementation of the Tahlia Asset Library GUI with docking system.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: asset_library_gui.cpp
+ * Description: Implementation of the Tahlia Asset Library GUI with docking system.
+ *              Provides modular GUI architecture with docking support, viewport management,
+ *              and comprehensive asset library interface components.
+ */
 
 #include "gui/asset_library_gui.hpp"
 #include <iostream>
@@ -17,6 +19,20 @@ AssetLibraryGUI::~AssetLibraryGUI() {
     cleanup();
 }
 
+/**
+ * Initializes the Asset Library GUI system with the specified configuration.
+ * 
+ * Sets up GLFW context, configures OpenGL settings, and prepares the GUI
+ * for window creation and rendering. This method must be called before
+ * creating any windows or running the application.
+ * 
+ * @param config Configuration object containing window settings, theme preferences,
+ *               and feature flags for docking and viewport support
+ * @return true if initialization successful, false otherwise
+ * 
+ * @note This method configures GLFW hints for OpenGL version and profile settings
+ * @note Viewport support is conditionally enabled based on configuration
+ */
 bool AssetLibraryGUI::initialize(const GUIConfig& config) {
     this->config = config;
     
@@ -39,6 +55,19 @@ bool AssetLibraryGUI::initialize(const GUIConfig& config) {
     return true;
 }
 
+/**
+ * Creates the main application window and initializes ImGui context.
+ * 
+ * Creates a GLFW window with the configured dimensions and title,
+ * sets up the OpenGL context, and initializes ImGui with appropriate
+ * backends and styling. This method must be called after initialize().
+ * 
+ * @return true if window creation successful, false otherwise
+ * 
+ * @note Enables vertical synchronization for smooth rendering
+ * @note Configures ImGui with docking and viewport support if enabled
+ * @note Applies theme settings (dark/light) based on configuration
+ */
 bool AssetLibraryGUI::createWindow() {
     if (!initialized) {
         std::cerr << "GUI not initialized" << std::endl;
@@ -91,6 +120,20 @@ bool AssetLibraryGUI::createWindow() {
     return true;
 }
 
+/**
+ * Executes the main application loop for the Asset Library GUI.
+ * 
+ * Handles window events, renders the GUI interface, and manages the
+ * application lifecycle. This method contains the primary rendering
+ * loop and must be called after createWindow().
+ * 
+ * @return Exit code (0 for normal exit, 1 for error)
+ * 
+ * @note Processes GLFW events and updates ImGui state each frame
+ * @note Renders the main window with all panels and components
+ * @note Handles viewport updates for multi-window support if enabled
+ * @note Manages OpenGL context and buffer swapping
+ */
 int AssetLibraryGUI::run() {
     if (!window) {
         std::cerr << "Window not created" << std::endl;
@@ -146,6 +189,18 @@ void AssetLibraryGUI::cleanup() {
     }
 }
 
+/**
+ * Renders the main application window with docking support and all panels.
+ * 
+ * Creates the primary window container, sets up docking space if enabled,
+ * and renders all major interface components including menu bar, panels,
+ * and status bar. This is the central rendering method for the application.
+ * 
+ * @note Configures window flags for docking and viewport support
+ * @note Sets up docking space for panel arrangement if enabled
+ * @note Renders all major interface components in sequence
+ * @note Applies consistent styling and layout management
+ */
 void AssetLibraryGUI::renderMainWindow() {
     // Create the main window
     ImGui::SetNextWindowSize(ImVec2(1400, 900), ImGuiCond_FirstUseEver);

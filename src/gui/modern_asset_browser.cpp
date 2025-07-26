@@ -1,9 +1,12 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: modern_asset_browser.cpp
-Description: Modern asset browser with beautiful styling and professional layout.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: modern_asset_browser.cpp
+ * Description: Modern asset browser implementation with professional styling, responsive layout,
+ *              and comprehensive asset management features. Provides grid/list/details view modes,
+ *              search/filter capabilities, asset preview functionality, and modern UI design
+ *              following professional software standards.
+ */
 
 #include "imgui.h"
 #include "backends/imgui_impl_glfw.h"
@@ -13,7 +16,10 @@ Description: Modern asset browser with beautiful styling and professional layout
 #include <vector>
 #include <string>
 
-// Asset item structure
+/**
+ * Asset item data structure representing a single asset in the library.
+ * Contains all metadata and state information for asset display and management.
+ */
 struct AssetItem {
     std::string name;
     std::string type;
@@ -32,7 +38,10 @@ struct AssetItem {
           last_modified(modified), is_selected(false), is_favorite(false) {}
 };
 
-// Modern color scheme
+/**
+ * Modern color scheme namespace providing consistent theming across the application.
+ * Defines primary, secondary, and utility colors for professional UI design.
+ */
 namespace Colors {
     const ImVec4 Primary = ImVec4(0.2f, 0.3f, 0.8f, 1.0f);      // Blue
     const ImVec4 Secondary = ImVec4(0.8f, 0.2f, 0.6f, 1.0f);    // Pink
@@ -45,7 +54,10 @@ namespace Colors {
     const ImVec4 TextMuted = ImVec4(0.6f, 0.6f, 0.6f, 1.0f);    // Muted text
 }
 
-// Sample assets
+/**
+ * Sample asset collection for demonstration and testing purposes.
+ * Provides realistic asset data to showcase the browser functionality.
+ */
 std::vector<AssetItem> sample_assets = {
     AssetItem("Character_01.fbx", "Model", "Characters", "/assets/characters/Character_01.fbx", 2048576, "2024-01-15 10:30:00"),
     AssetItem("Environment_01.blend", "Model", "Environment", "/assets/environments/Environment_01.blend", 5120000, "2024-01-14 15:45:00"),
@@ -59,7 +71,10 @@ std::vector<AssetItem> sample_assets = {
     AssetItem("Animation_01.fbx", "Animation", "Animations", "/assets/animations/Animation_01.fbx", 4096000, "2024-01-06 08:55:00")
 };
 
-// Global state
+/**
+ * Global application state variables for UI management and user interaction.
+ * Maintains current view state, selection, and user preferences.
+ */
 static int selected_view_mode = 0; // 0=Grid, 1=List, 2=Details
 static char search_buffer[256] = "";
 static int selected_category = 0;
@@ -69,7 +84,10 @@ static bool show_recent_only = false;
 static float thumbnail_size = 120.0f;
 static AssetItem* selected_asset = nullptr;
 
-// Helper functions
+/**
+ * Configures ImGui style settings for modern, professional appearance.
+ * Applies consistent color scheme, spacing, and visual styling across all UI elements.
+ */
 void SetupModernStyle() {
     ImGuiStyle& style = ImGui::GetStyle();
     
@@ -111,6 +129,18 @@ void SetupModernStyle() {
     style.TabRounding = 4.0f;
 }
 
+/**
+ * Renders a single asset thumbnail with type-specific styling and selection indicators.
+ * 
+ * @param asset Reference to the asset item to render
+ * @param size Size of the thumbnail in pixels (width and height)
+ * 
+ * Features:
+ * - Type-specific color coding (3D models, textures, materials, audio)
+ * - Selection highlighting with visual feedback
+ * - Asset name and type display
+ * - Professional styling with consistent spacing
+ */
 void RenderAssetThumbnail(const AssetItem& asset, float size) {
     ImGui::BeginGroup();
     
@@ -169,10 +199,27 @@ void RenderAssetThumbnail(const AssetItem& asset, float size) {
     ImGui::EndGroup();
 }
 
+/**
+ * Renders the asset browser in grid view mode with responsive layout.
+ * 
+ * Features:
+ * - Dynamic column calculation based on window width
+ * - Centered grid layout with proper spacing
+ * - Click-to-select functionality for assets
+ * - Responsive design that adapts to window resizing
+ * - Professional thumbnail display with type indicators
+ */
 void RenderAssetGrid() {
-    float window_width = ImGui::GetWindowWidth();
+    float window_width = ImGui::GetContentRegionAvail().x;
     int columns = static_cast<int>(window_width / (thumbnail_size + 20));
     if (columns < 1) columns = 1;
+    
+    // Center the grid if there's extra space
+    float total_width = columns * (thumbnail_size + 20) - 20;
+    float extra_space = window_width - total_width;
+    if (extra_space > 0) {
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + extra_space * 0.5f);
+    }
     
     ImGui::Columns(columns, nullptr, false);
     
@@ -191,6 +238,16 @@ void RenderAssetGrid() {
     ImGui::Columns(1);
 }
 
+/**
+ * Renders the asset browser in list view mode with sortable columns.
+ * 
+ * Features:
+ * - Sortable table with resizable columns
+ * - File size formatting (B, KB, MB)
+ * - Click-to-select functionality spanning all columns
+ * - Professional table styling with alternating row colors
+ * - Comprehensive asset metadata display
+ */
 void RenderAssetList() {
     ImGui::BeginTable("AssetList", 5, ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | 
                                      ImGuiTableFlags_Hideable | ImGuiTableFlags_Sortable | 
@@ -240,8 +297,18 @@ void RenderAssetList() {
     ImGui::EndTable();
 }
 
+/**
+ * Renders the main toolbar with view mode controls and asset management actions.
+ * 
+ * Features:
+ * - View mode selection (Grid, List, Details)
+ * - Asset management buttons (Import, Export, Delete)
+ * - Thumbnail size adjustment slider
+ * - Color-coded buttons for different action types
+ * - Professional styling with consistent spacing
+ */
 void RenderToolbar() {
-    ImGui::BeginChild("Toolbar", ImVec2(0, 60), true);
+    ImGui::BeginChild("Toolbar", ImVec2(0, 60), true, ImGuiWindowFlags_NoScrollbar);
     
     // View mode buttons
     ImGui::PushStyleColor(ImGuiCol_Button, selected_view_mode == 0 ? Colors::Primary : Colors::Card);
@@ -299,8 +366,18 @@ void RenderToolbar() {
     ImGui::EndChild();
 }
 
+/**
+ * Renders the search and filter sidebar with comprehensive filtering options.
+ * 
+ * Features:
+ * - Text search functionality
+ * - Category and type filtering dropdowns
+ * - Favorites and recent filters
+ * - Quick action buttons for library management
+ * - Professional layout with clear section separation
+ */
 void RenderSidebar() {
-    ImGui::BeginChild("Sidebar", ImVec2(250, 0), true);
+    ImGui::BeginChild("Sidebar", ImVec2(250, 0), true, ImGuiWindowFlags_NoScrollbar);
     
     ImGui::Text("🔍 Search & Filter");
     ImGui::Separator();
@@ -342,8 +419,18 @@ void RenderSidebar() {
     ImGui::EndChild();
 }
 
+/**
+ * Renders the asset preview panel with 3D preview area and asset details.
+ * 
+ * Features:
+ * - Centered 3D preview area (placeholder for future integration)
+ * - Asset metadata display with proper formatting
+ * - Responsive layout that adapts to window size
+ * - Professional styling with consistent spacing
+ * - Clear visual hierarchy for information display
+ */
 void RenderAssetPreview() {
-    ImGui::BeginChild("Asset Preview", ImVec2(0, 300), true);
+    ImGui::BeginChild("Asset Preview", ImVec2(0, 300), true, ImGuiWindowFlags_NoScrollbar);
     
     if (selected_asset) {
         ImGui::Text("🎨 Asset Preview: %s", selected_asset->name.c_str());
@@ -354,21 +441,31 @@ void RenderAssetPreview() {
         ImVec2 pos = ImGui::GetCursorScreenPos();
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
         
+        // Center the preview area
+        float preview_width = preview_size.x - 40;
+        float preview_height = preview_size.y - 120;
+        float start_x = pos.x + (preview_size.x - preview_width) * 0.5f;
+        float start_y = pos.y + 20;
+        
         // Draw preview background
         draw_list->AddRectFilled(
-            pos, 
-            ImVec2(pos.x + preview_size.x - 20, pos.y + preview_size.y - 100),
+            ImVec2(start_x, start_y), 
+            ImVec2(start_x + preview_width, start_y + preview_height),
             IM_COL32(30, 30, 35, 255)
         );
         
-        // Draw preview content (placeholder)
-        ImVec2 center = ImVec2(pos.x + (preview_size.x - 20) * 0.5f, pos.y + (preview_size.y - 100) * 0.5f);
+        // Draw preview content (placeholder) - centered
+        ImVec2 center = ImVec2(start_x + preview_width * 0.5f, start_y + preview_height * 0.5f);
         draw_list->AddText(center, IM_COL32(150, 150, 150, 255), "3D Preview Area");
         draw_list->AddText(ImVec2(center.x - 30, center.y + 20), IM_COL32(100, 100, 100, 255), "(Coming Soon)");
         
-        ImGui::SetCursorScreenPos(ImVec2(pos.x, pos.y + preview_size.y - 80));
+        ImGui::SetCursorScreenPos(ImVec2(pos.x, start_y + preview_height + 30));
         
-        // Asset info
+        // Asset info - centered
+        float info_width = 400;
+        float info_start_x = pos.x + (preview_size.x - info_width) * 0.5f;
+        ImGui::SetCursorPosX(info_start_x);
+        
         ImGui::Text("Name: %s", selected_asset->name.c_str());
         ImGui::Text("Type: %s", selected_asset->type.c_str());
         ImGui::Text("Category: %s", selected_asset->category.c_str());
@@ -378,12 +475,31 @@ void RenderAssetPreview() {
     } else {
         ImGui::Text("🎨 Asset Preview");
         ImGui::Separator();
-        ImGui::Text("Select an asset to preview");
+        
+        // Center the "Select an asset" message
+        ImVec2 preview_size = ImGui::GetContentRegionAvail();
+        ImVec2 pos = ImGui::GetCursorScreenPos();
+        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        
+        ImVec2 center = ImVec2(pos.x + preview_size.x * 0.5f, pos.y + preview_size.y * 0.5f);
+        draw_list->AddText(center, IM_COL32(150, 150, 150, 255), "Select an asset to preview");
     }
     
     ImGui::EndChild();
 }
 
+/**
+ * Main entry point for the modern asset browser application.
+ * 
+ * Initializes GLFW, ImGui, and sets up the main application loop with:
+ * - Window creation and configuration
+ * - ImGui context and backend setup
+ * - Modern styling application
+ * - Responsive layout management
+ * - Professional asset browser interface
+ * 
+ * @return Exit code (0 for success, 1 for failure)
+ */
 int main() {
     std::cout << "🎨 Starting Modern Asset Browser..." << std::endl;
     
@@ -429,9 +545,17 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Main window
-        ImGui::SetNextWindowSize(ImVec2(1600, 1000), ImGuiCond_FirstUseEver);
-        ImGui::Begin("Tahlia Asset Library - Modern Browser", nullptr, ImGuiWindowFlags_MenuBar);
+        // Get actual window size for true responsiveness
+        int window_width, window_height;
+        glfwGetWindowSize(window, &window_width, &window_height);
+        
+        // Main window - make it truly responsive
+        ImGui::SetNextWindowSize(ImVec2(static_cast<float>(window_width), static_cast<float>(window_height)), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+        ImGui::Begin("Tahlia Asset Library - Modern Browser", nullptr, 
+                     ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove | 
+                     ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoCollapse | 
+                     ImGuiWindowFlags_NoResize);
         
         // Menu bar
         if (ImGui::BeginMenuBar()) {
@@ -461,21 +585,23 @@ int main() {
         // Toolbar
         RenderToolbar();
         
-        // Main content area
-        ImGui::BeginChild("MainContent", ImVec2(0, 0), false);
+        // Main content area - use full window space, no borders, no padding
+        ImGui::BeginChild("MainContent", ImVec2(0, 0), false, 
+                         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground);
         
-        // Sidebar
+        // Sidebar - fixed width, but responsive height
         RenderSidebar();
         ImGui::SameLine();
         
-        // Main asset area
-        ImGui::BeginChild("AssetArea", ImVec2(0, 0), true);
+        // Main asset area - take ALL remaining space, no borders
+        ImGui::BeginChild("AssetArea", ImVec2(0, 0), false, 
+                         ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground);
         
-        // Asset preview at top
+        // Asset preview at top - responsive height
         RenderAssetPreview();
         
-        // Asset browser
-        ImGui::BeginChild("AssetBrowser", ImVec2(0, 0), true);
+        // Asset browser - take remaining space, no borders
+        ImGui::BeginChild("AssetBrowser", ImVec2(0, 0), false, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBackground);
         
         if (selected_view_mode == 0) {
             RenderAssetGrid();

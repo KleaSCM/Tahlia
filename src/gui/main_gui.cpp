@@ -1,9 +1,11 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: main_gui.cpp
-Description: Main entry point for the Tahlia GUI application with docking system.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: main_gui.cpp
+ * Description: Main entry point for the Tahlia GUI application with docking system.
+ *              Initializes the asset library GUI, configures application settings,
+ *              and manages the main application lifecycle.
+ */
 
 #include "gui/asset_library_gui.hpp"
 #include <iostream>
