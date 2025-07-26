@@ -90,4 +90,69 @@ pub fn build(b: *std.Build) void {
 
     const run_material_test_step = b.step("run-test-material", "Run the material manager tests");
     run_material_test_step.dependOn(&run_material_test.step);
+
+    // GUI Application
+    const gui_app = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "src/gui", "-I", "dependencies/imgui", "-lglfw", "-lGL", "-lGLU", "src/gui/main_gui.cpp", "src/gui/asset_library_gui.cpp", "dependencies/imgui/imgui.cpp", "dependencies/imgui/imgui_draw.cpp", "dependencies/imgui/imgui_tables.cpp", "dependencies/imgui/imgui_widgets.cpp", "dependencies/imgui/backends/imgui_impl_glfw.cpp", "dependencies/imgui/backends/imgui_impl_opengl3.cpp", "src/core/asset_manager.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "src/core/asset_indexer.cpp", "src/core/asset_validator.cpp", "src/core/audit.cpp", "src/core/python_bridge.cpp", "-o", "zig-out/bin/tahlia_gui" });
+    gui_app.step.dependOn(&mkdir_step.step);
+
+    const gui_build_step = b.step("build-gui", "Build the GUI application");
+    gui_build_step.dependOn(&gui_app.step);
+
+    const gui_run = b.addSystemCommand(&.{"zig-out/bin/tahlia_gui"});
+    gui_run.step.dependOn(&gui_app.step);
+
+    const gui_run_step = b.step("run-gui", "Run the GUI application");
+    gui_run_step.dependOn(&gui_run.step);
+
+    // GUI Test
+    const gui_test = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "src/gui", "-I", "dependencies/imgui", "-I", "Tests", "-lglfw", "-lGL", "-lGLU", "Tests/test_gui.cpp", "src/gui/asset_library_gui.cpp", "dependencies/imgui/imgui.cpp", "dependencies/imgui/imgui_draw.cpp", "dependencies/imgui/imgui_tables.cpp", "dependencies/imgui/imgui_widgets.cpp", "dependencies/imgui/backends/imgui_impl_glfw.cpp", "dependencies/imgui/backends/imgui_impl_opengl3.cpp", "src/core/asset_manager.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "src/core/asset_indexer.cpp", "src/core/asset_validator.cpp", "src/core/audit.cpp", "src/core/python_bridge.cpp", "-o", "zig-out/bin/test_gui" });
+    gui_test.step.dependOn(&mkdir_step.step);
+
+    const gui_test_build_step = b.step("build-test-gui", "Build the GUI tests");
+    gui_test_build_step.dependOn(&gui_test.step);
+
+    const gui_test_run = b.addSystemCommand(&.{"zig-out/bin/test_gui"});
+    gui_test_run.step.dependOn(&gui_test.step);
+
+    const gui_test_run_step = b.step("run-test-gui", "Run the GUI tests");
+    gui_test_run_step.dependOn(&gui_test_run.step);
+
+    // Simple GUI Test
+    const simple_gui_test = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "src/gui", "-lglfw", "-lGL", "-lGLU", "src/gui/simple_gui_test.cpp", "src/gui/imgui.cpp", "src/gui/imgui_draw.cpp", "src/gui/imgui_tables.cpp", "src/gui/imgui_widgets.cpp", "src/gui/backends/imgui_impl_glfw.cpp", "src/gui/backends/imgui_impl_opengl3.cpp", "-o", "zig-out/bin/simple_gui_test" });
+    simple_gui_test.step.dependOn(&mkdir_step.step);
+
+    const simple_gui_test_build_step = b.step("build-simple-gui", "Build the simple GUI test");
+    simple_gui_test_build_step.dependOn(&simple_gui_test.step);
+
+    const simple_gui_test_run = b.addSystemCommand(&.{"zig-out/bin/simple_gui_test"});
+    simple_gui_test_run.step.dependOn(&simple_gui_test.step);
+
+    const simple_gui_test_run_step = b.step("run-simple-gui", "Run the simple GUI test");
+    simple_gui_test_run_step.dependOn(&simple_gui_test_run.step);
+
+    // Simple GUI Test (Single File)
+    const simple_gui_single_test = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "src/gui", "-I", "dependencies/imgui", "-lglfw", "-lGL", "-lGLU", "src/gui/simple_gui_single.cpp", "dependencies/imgui/backends/imgui_impl_glfw.cpp", "dependencies/imgui/backends/imgui_impl_opengl3.cpp", "-o", "zig-out/bin/simple_gui_single" });
+    simple_gui_single_test.step.dependOn(&mkdir_step.step);
+
+    const simple_gui_single_build_step = b.step("build-simple-gui-single", "Build the simple GUI test (single file)");
+    simple_gui_single_build_step.dependOn(&simple_gui_single_test.step);
+
+    const simple_gui_single_run = b.addSystemCommand(&.{"zig-out/bin/simple_gui_single"});
+    simple_gui_single_run.step.dependOn(&simple_gui_single_test.step);
+
+    const simple_gui_single_run_step = b.step("run-simple-gui-single", "Run the simple GUI test (single file)");
+    simple_gui_single_run_step.dependOn(&simple_gui_single_run.step);
+
+    // Basic Window Test
+    const basic_window_test = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-lglfw", "-lGL", "-lGLU", "Tests/gui/basic_window_test.cpp", "-o", "zig-out/bin/basic_window_test" });
+    basic_window_test.step.dependOn(&mkdir_step.step);
+
+    const basic_window_test_build_step = b.step("build-basic-window", "Build the basic window test");
+    basic_window_test_build_step.dependOn(&basic_window_test.step);
+
+    const basic_window_test_run = b.addSystemCommand(&.{"zig-out/bin/basic_window_test"});
+    basic_window_test_run.step.dependOn(&basic_window_test.step);
+
+    const basic_window_test_run_step = b.step("run-basic-window", "Run the basic window test");
+    basic_window_test_run_step.dependOn(&basic_window_test_run.step);
 }
