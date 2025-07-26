@@ -44,8 +44,9 @@
 - [x] Texture loading and assignment
 - [x] PBR material creation with multiple maps
 
-- [ ] Import history module (ImportHistory)
-- [ ] Track imported assets, undo/clear
+- [x] Import history module (ImportHistory) 📚✨
+- [x] Track imported assets, undo/clear
+- [x] Comprehensive test suite (24 tests) 🧪
 
 - [ ] FFI/Python bridge (PythonBridge)
 - [ ] Expose C++ core to Python (ctypes/pybind11)

@@ -38,6 +38,20 @@ pub fn build(b: *std.Build) void {
     const run_history_test_step = b.step("run-test-history", "Run the import history tests");
     run_history_test_step.dependOn(&run_history_test.step);
 
+    // Add PythonBridge test build
+    const python_bridge_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "-I", "/usr/include/python3.11", "-lpython3.11", "src/core/python_bridge.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "Tests/test_python_bridge.cpp", "-o", "zig-out/bin/test_python_bridge" });
+    python_bridge_test_compile.step.dependOn(&mkdir_step.step);
+
+    const python_bridge_test_build_step = b.step("build-test-python-bridge", "Build the python bridge tests");
+    python_bridge_test_build_step.dependOn(&python_bridge_test_compile.step);
+
+    // Add run test step
+    const run_python_bridge_test = b.addSystemCommand(&.{"zig-out/bin/test_python_bridge"});
+    run_python_bridge_test.step.dependOn(&python_bridge_test_compile.step);
+
+    const run_python_bridge_test_step = b.step("run-test-python-bridge", "Run the python bridge tests");
+    run_python_bridge_test_step.dependOn(&run_python_bridge_test.step);
+
     import_test_compile.step.dependOn(&mkdir_step.step);
 
     const import_test_build_step = b.step("build-test-import", "Build the import manager tests");

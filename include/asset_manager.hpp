@@ -41,6 +41,7 @@
 #include <functional>
 #include "import_manager.hpp"
 #include "material_manager.hpp"
+#include "import_history.hpp"
 
 namespace AssetManager {
 
@@ -77,13 +78,7 @@ struct SearchFilters {
 };
 
 // MaterialPreset is now defined in material_manager.hpp
-
-struct ImportHistoryEntry {
-    std::string asset_path;
-    std::vector<std::string> imported_objects;
-    ImportOptions options;
-    std::chrono::system_clock::time_point timestamp;
-};
+// ImportHistoryEntry is now defined in import_history.hpp
 
 // Main AssetManager class
 class AssetManager {
