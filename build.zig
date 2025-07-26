@@ -23,6 +23,21 @@ pub fn build(b: *std.Build) void {
 
     // Add ImportManager test build (using simple test harness)
     const import_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "src/core/import_manager.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/material_manager.cpp", "Tests/test_import_manager.cpp", "-o", "zig-out/bin/test_import_manager" });
+
+    // Add ImportHistory test build
+    const history_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "src/core/import_history.cpp", "Tests/test_import_history.cpp", "-o", "zig-out/bin/test_import_history" });
+    history_test_compile.step.dependOn(&mkdir_step.step);
+
+    const history_test_build_step = b.step("build-test-history", "Build the import history tests");
+    history_test_build_step.dependOn(&history_test_compile.step);
+
+    // Add run test step
+    const run_history_test = b.addSystemCommand(&.{"zig-out/bin/test_import_history"});
+    run_history_test.step.dependOn(&history_test_compile.step);
+
+    const run_history_test_step = b.step("run-test-history", "Run the import history tests");
+    run_history_test_step.dependOn(&run_history_test.step);
+
     import_test_compile.step.dependOn(&mkdir_step.step);
 
     const import_test_build_step = b.step("build-test-import", "Build the import manager tests");

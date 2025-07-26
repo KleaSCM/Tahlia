@@ -1,0 +1,16 @@
+{
+  "history": [
+    {
+      "id": "test_035",
+      "asset_path": "test_asset.fbx",
+      "import_type": "import",
+      "timestamp": "1753534957",
+      "success": true,
+      "message": "Import successful",
+      "collection_name": "",
+      "options": {
+      },
+      "imported_objects": ["TestObject"]
+    }
+  ]
+}
