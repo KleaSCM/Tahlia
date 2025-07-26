@@ -169,16 +169,16 @@ pub fn build(b: *std.Build) void {
     const simple_imgui_test_run_step = b.step("run-simple-imgui", "Run the simple ImGui test");
     simple_imgui_test_run_step.dependOn(&simple_imgui_test_run.step);
 
-    // Modern Asset Browser
-    const modern_asset_browser = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "dependencies/imgui", "-lglfw", "-lGL", "-lGLU", "src/gui/modern_asset_browser.cpp", "dependencies/imgui/imgui.cpp", "dependencies/imgui/imgui_draw.cpp", "dependencies/imgui/imgui_tables.cpp", "dependencies/imgui/imgui_widgets.cpp", "dependencies/imgui/backends/imgui_impl_glfw.cpp", "dependencies/imgui/backends/imgui_impl_opengl3.cpp", "-o", "zig-out/bin/modern_asset_browser" });
-    modern_asset_browser.step.dependOn(&mkdir_step.step);
+    // Asset Browser
+    const asset_browser = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "dependencies/imgui", "-lglfw", "-lGL", "-lGLU", "src/gui/asset_browser.cpp", "dependencies/imgui/imgui.cpp", "dependencies/imgui/imgui_draw.cpp", "dependencies/imgui/imgui_tables.cpp", "dependencies/imgui/imgui_widgets.cpp", "dependencies/imgui/backends/imgui_impl_glfw.cpp", "dependencies/imgui/backends/imgui_impl_opengl3.cpp", "-o", "zig-out/bin/asset_browser" });
+    asset_browser.step.dependOn(&mkdir_step.step);
 
-    const modern_asset_browser_build_step = b.step("build-modern-browser", "Build the modern asset browser");
-    modern_asset_browser_build_step.dependOn(&modern_asset_browser.step);
+    const asset_browser_build_step = b.step("build-asset-browser", "Build the asset browser");
+    asset_browser_build_step.dependOn(&asset_browser.step);
 
-    const modern_asset_browser_run = b.addSystemCommand(&.{"zig-out/bin/modern_asset_browser"});
-    modern_asset_browser_run.step.dependOn(&modern_asset_browser.step);
+    const asset_browser_run = b.addSystemCommand(&.{"zig-out/bin/asset_browser"});
+    asset_browser_run.step.dependOn(&asset_browser.step);
 
-    const modern_asset_browser_run_step = b.step("run-modern-browser", "Run the modern asset browser");
-    modern_asset_browser_run_step.dependOn(&modern_asset_browser_run.step);
+    const asset_browser_run_step = b.step("run-asset-browser", "Run the asset browser");
+    asset_browser_run_step.dependOn(&asset_browser_run.step);
 }

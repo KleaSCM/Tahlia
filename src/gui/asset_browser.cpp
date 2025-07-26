@@ -1,7 +1,7 @@
 /*
  * Author: KleaSCM
  * Email: KleaSCM@gmail.com
- * Name: modern_asset_browser.cpp
+ * Name: asset_browser.cpp
  * Description: Modern asset browser implementation with professional styling, responsive layout,
  *              and comprehensive asset management features. Provides grid/list/details view modes,
  *              search/filter capabilities, asset preview functionality, and modern UI design
