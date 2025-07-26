@@ -1,9 +1,31 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: audit.hpp
-Description: Header for the AssetAuditor class. Provides modular, production-level asset library auditing for Blender Asset Manager. Defines all interfaces for scanning, statistics, reporting, and validation.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: audit.hpp
+ * Description: Header file for the AssetAuditor class providing comprehensive asset library auditing capabilities.
+ *              Features detailed asset analysis, statistics collection, issue detection, and report generation.
+ *              Designed for ensuring asset library quality and identifying problematic files and dependencies.
+ *
+ * Architecture:
+ * - Modular auditing system with comprehensive file analysis
+ * - Intelligent statistics collection with categorized breakdowns
+ * - Duplicate detection and missing file reference checking
+ * - Format-specific validation and dependency analysis
+ * - Detailed reporting with actionable recommendations
+ * - Extensible design for new audit criteria and file types
+ *
+ * Key Features:
+ * - Comprehensive asset library scanning and analysis
+ * - Detailed statistics collection (file types, sizes, categories)
+ * - Duplicate file detection with location tracking
+ * - Missing file reference detection and reporting
+ * - File size analysis with largest file identification
+ * - Category and asset type breakdown and statistics
+ * - Human-readable report generation with formatting
+ * - Configurable audit criteria and filtering options
+ * - High-performance scanning with minimal I/O overhead
+ * - Timestamp-based audit tracking and history
+ */
 
 #ifndef AUDIT_HPP
 #define AUDIT_HPP

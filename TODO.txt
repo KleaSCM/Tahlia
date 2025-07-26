@@ -11,32 +11,45 @@
 - [x] Supported formats listing
 - [x] Modular, professional codebase
 - [x] Clean, DRY main.cpp (no duplicate logic)
+- [x] Asset validation module (AssetValidator)
+    - [x] Check for missing textures, file integrity, empty files
+    - [x] Report issues/warnings per asset
 
 ## ⏳ Pending / In Progress
-- [ ] Asset validation module (AssetValidator)
-    - [ ] Check for missing textures, file integrity, empty files
-    - [ ] Report issues/warnings per asset
+- [x] Asset validation module (AssetValidator)
+    - [x] Check for missing textures, file integrity, empty files
+    - [x] Report issues/warnings per asset
+
+
 - [ ] Model importing module (ImportManager)
     - [ ] Import with options (location, rotation, scale, merge, auto-smooth, etc.)
     - [ ] Bulk import in patterns (grid, circle, line, random)
     - [ ] Linking vs. importing assets
+
+
 - [ ] Material handling module (MaterialManager)
     - [ ] Material creation (PBR, quick setup, auto-assign)
     - [ ] Texture loading and assignment
     - [ ] PBR material creation with multiple maps
+
+
 - [ ] Import history module (ImportHistory)
     - [ ] Track imported assets, undo/clear
+
+
 - [ ] FFI/Python bridge (PythonBridge)
     - [ ] Expose C++ core to Python (ctypes/pybind11)
     - [ ] Blender context management (preserve selection, etc.)
+
+
 - [ ] Auditing, validation, and test scripts (Tests/)
     - [ ] Universal asset audit
     - [ ] Unit/integration tests for all modules
+
+
 - [ ] Utilities/helpers (FileUtils, etc.)
     - [ ] Path helpers, legacy compatibility
+
+
 - [ ] Documentation (Docs/)
     - [ ] Architecture diagrams, module docs, usage examples
-
----
-
-# To tick off a task, change [ ] to [x] and move it to the Completed section above.

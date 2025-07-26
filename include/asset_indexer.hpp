@@ -1,10 +1,29 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: asset_indexer.hpp
-Description: Asset indexing and caching system for high-performance asset discovery and management.
-             Features lazy loading, intelligent caching, and optimized file system scanning.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: asset_indexer.hpp
+ * Description: Header file for the AssetIndexer class providing high-performance asset discovery and caching capabilities.
+ *              Features intelligent file system scanning, metadata extraction, and optimized caching for large asset libraries.
+ *              Designed for managing diverse asset types across multiple file formats with minimal I/O overhead.
+ *
+ * Architecture:
+ * - Modular indexing system with format-specific metadata extractors
+ * - Intelligent caching with configurable expiry and lazy loading
+ * - Multi-threaded file system scanning with pattern-based filtering
+ * - Hierarchical categorization by type, category, and metadata
+ * - Dependency tracking and validation for complex asset relationships
+ * - Extensible design for new file format support
+ *
+ * Key Features:
+ * - High-performance asset discovery with configurable scanning patterns
+ * - Intelligent caching with automatic invalidation and refresh
+ * - Format-specific metadata extraction (OBJ, FBX, Blend, MTL files)
+ * - Dependency tracking for textures, materials, and linked assets
+ * - Multi-criteria asset categorization and filtering
+ * - Thread-safe operations with mutex-protected cache access
+ * - Configurable file type mappings and ignored patterns
+ * - Comprehensive asset information with modification tracking
+ */
 
 #pragma once
 

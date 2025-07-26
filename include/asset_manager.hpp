@@ -1,11 +1,31 @@
 /*
-Author: KleaSCM
-Email: KleaSCM@gmail.com
-Name: asset_manager.hpp
-Description: Core C++ asset management system for Blender projects with production-level performance.
-             Features caching, lazy loading, PBR material support, logging, context management,
-             bulk importing, configurable paths, and advanced import options for enterprise-scale asset management.
-*/
+ * Author: KleaSCM
+ * Email: KleaSCM@gmail.com
+ * Name: asset_manager.hpp
+ * Description: Header file for the AssetManager class providing comprehensive asset management capabilities.
+ *              Features high-performance asset discovery, validation, importing, and material management.
+ *              Designed for managing diverse asset libraries with advanced import options and PBR material support.
+ *
+ * Architecture:
+ * - Modular asset management system with specialized subsystems
+ * - High-performance asset discovery and indexing with intelligent caching
+ * - Advanced material management with PBR texture mapping support
+ * - Flexible import system with configurable options and bulk operations
+ * - Comprehensive validation and error reporting mechanisms
+ * - Extensible design for new asset types and import handlers
+ *
+ * Key Features:
+ * - High-performance asset discovery and indexing with configurable scanning
+ * - Advanced material management with PBR texture mapping and presets
+ * - Flexible import system with location, rotation, scale, and collection options
+ * - Bulk asset importing with pattern matching and automatic spacing
+ * - Comprehensive asset validation with detailed issue reporting
+ * - Advanced search capabilities with multiple filter criteria
+ * - Import history tracking and management
+ * - Collection management for organized asset grouping
+ * - JSON-based communication for Python FFI integration
+ * - Configurable cache management with automatic invalidation
+ */
 
 #pragma once
 

@@ -25,9 +25,12 @@
 
 #include "../include/asset_manager.hpp"
 #include "../include/audit.hpp"
+#include "../include/asset_validator.hpp"
 #include <iostream>
 #include <chrono>
 #include <string>
+#include <fstream>
+#include <filesystem>
 
 /**
  * @brief Main entry point for the Universal Asset Manager application
@@ -63,6 +66,89 @@ int main(int argc, char* argv[]) {
             return 1;
         } catch (...) {
             std::cerr << "❌ Audit failed with unknown exception!" << std::endl;
+            return 1;
+        }
+        return 0;
+    }
+
+    // Check if validation mode is requested via command-line argument
+    if (argc > 1 && std::string(argv[1]) == "--validate") {
+        std::cout << "🔍 Universal Asset Validation Tool" << std::endl;
+        std::cout << "Author: KleaSCM" << std::endl;
+        std::cout << "Email: KleaSCM@gmail.com" << std::endl;
+        std::cout << "=====================================" << std::endl;
+        
+        try {
+            // Initialize validator
+            AssetManager::AssetValidator validator;
+            
+            // Set validation options for comprehensive checking
+            std::map<std::string, std::any> options;
+            options["check_file_integrity"] = true;
+            options["check_texture_dependencies"] = true;
+            options["check_format_specific"] = true;
+            options["max_file_size_mb"] = size_t(1000);
+            validator.setValidationOptions(options);
+            
+            // Validate Assets directory if it exists
+            std::string assets_path = "Assets";
+            if (std::filesystem::exists(assets_path)) {
+                std::cout << "🔍 Validating Assets directory..." << std::endl;
+                auto validation_start = std::chrono::high_resolution_clock::now();
+                
+                std::vector<AssetManager::ValidationResult> results = validator.validateDirectory(assets_path);
+                
+                auto validation_end = std::chrono::high_resolution_clock::now();
+                auto validation_duration = std::chrono::duration_cast<std::chrono::milliseconds>(validation_end - validation_start);
+                
+                std::cout << "✅ Validation completed in " << validation_duration.count() << "ms" << std::endl;
+                std::cout << "📊 Validated " << results.size() << " assets" << std::endl;
+                
+                // Generate and display validation report
+                std::string report = validator.generateReport(results);
+                std::cout << "\n" << report << std::endl;
+                
+                // Save detailed report to file
+                std::string report_path = "validation_report.txt";
+                if (validator.saveReport(results, report_path)) {
+                    std::cout << "💾 Detailed report saved to: " << report_path << std::endl;
+                }
+                
+            } else {
+                std::cout << "⚠️  Assets directory not found. Creating sample files for validation..." << std::endl;
+                
+                // Create sample files for validation testing
+                std::filesystem::create_directories("test_assets");
+                
+                // Create a valid OBJ file
+                std::ofstream obj_file("test_assets/sample.obj");
+                obj_file << "# Sample OBJ file\nv 0.0 0.0 0.0\nv 1.0 0.0 0.0\nv 0.0 1.0 0.0\nf 1 2 3\n";
+                obj_file.close();
+                
+                // Create an empty file for testing
+                std::ofstream empty_file("test_assets/empty.txt");
+                empty_file.close();
+                
+                // Create a file with missing MTL reference
+                std::ofstream bad_obj("test_assets/bad.obj");
+                bad_obj << "# OBJ with missing MTL\nmtllib missing.mtl\nv 0.0 0.0 0.0\nf 1 1 1\n";
+                bad_obj.close();
+                
+                std::cout << "🔍 Validating test assets..." << std::endl;
+                std::vector<AssetManager::ValidationResult> results = validator.validateDirectory("test_assets");
+                
+                std::string report = validator.generateReport(results);
+                std::cout << "\n" << report << std::endl;
+                
+                // Clean up test files
+                std::filesystem::remove_all("test_assets");
+            }
+            
+        } catch (const std::exception& e) {
+            std::cerr << "❌ Validation failed with exception: " << e.what() << std::endl;
+            return 1;
+        } catch (...) {
+            std::cerr << "❌ Validation failed with unknown exception!" << std::endl;
             return 1;
         }
         return 0;

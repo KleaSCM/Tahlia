@@ -1,0 +1,422 @@
+=== Asset Validation Report ===
+
+Generated: 1753526912170202
+Total assets validated: 64
+
+=== Summary ===
+Valid assets: 52/64
+Total issues found: 51
+  - Errors: 23
+  - Warnings: 3
+  - Info: 25
+
+=== Detailed Results ===
+Asset: Assets/Models/Buildings/building_04/building_04.fbx
+  Status: VALID
+  Issues: 3 (E:0 W:1 I:2)
+    [WARNING] FBX file may not be in standard binary format
+      Context: Signature: ; FBX 6.1.0 project fil
+      Recommendation: This might be a text-based FBX file or corrupted binary file
+    [INFO] FBX file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Consider using specialized FBX tools for detailed validation
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/building_04/building_04.fbx
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/building_04/building_04.mtl
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/building_04/building_04.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/building_04/building_04.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/building_04/building_04_nopack.blend
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Blend file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Use Blender for detailed scene validation and compatibility checking
+
+Asset: Assets/Models/Buildings/building_04/grass.fbx
+  Status: VALID
+  Issues: 3 (E:0 W:1 I:2)
+    [WARNING] FBX file may not be in standard binary format
+      Context: Signature: ; FBX 6.1.0 project fil
+      Recommendation: This might be a text-based FBX file or corrupted binary file
+    [INFO] FBX file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Consider using specialized FBX tools for detailed validation
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/building_04/grass.fbx
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/AussenWand_C.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/AussenWand_N.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Box_D.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Box_N.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Grass_col.JPG
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Hotel_Hous_AO.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/REF 1.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Reflexion.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/SKY.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Steel_C.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Steel_N.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/Steel_S.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/textures/fire extinguisher_ref.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 001.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 001.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 001.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 002.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 002.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 002.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 003.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 003.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 003.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 004.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 004.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 004.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 005.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 005.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 005.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 006.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 006.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 006.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 007.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 007.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 007.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 008.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 008.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 008.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 009.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 009.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 009.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 010.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png (expected at: Assets/Models/Buildings/residential_buildings/C:\Users\DH\Desktop\Residential Buildings Set\textures\Hotel_Hous_AO.png)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg (expected at: Assets/Models/Buildings/residential_buildings/C:\\Users\\DH\\Desktop\\Residential Buildings Set\\textures\\Steel_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Buildings/residential_buildings/Residential Buildings 010.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/residential_buildings/Residential Buildings 010.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Buildings/cottage/cottage_obj.mtl
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Buildings/cottage/cottage_obj.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Buildings/cottage/cottage_obj.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Characters/anime_character/Anime_character.fbx
+  Status: VALID
+  Issues: 3 (E:0 W:1 I:2)
+    [WARNING] FBX file may not be in standard binary format
+      Context: Signature: Kaydara FBX Binary    
+      Recommendation: This might be a text-based FBX file or corrupted binary file
+    [INFO] FBX file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Consider using specialized FBX tools for detailed validation
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Characters/anime_character/Anime_character.fbx
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Characters/anime_character/Anime_charcter.blend
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Blend file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Use Blender for detailed scene validation and compatibility checking
+
+Asset: Assets/Models/Characters/anime_character/textures.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Characters/rigged_hand/textures/HAND_C.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Characters/rigged_hand/textures/HAND_N .jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Characters/rigged_hand/textures/HAND_S.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Characters/rigged_hand/Rigged Hand.mtl
+  Status: INVALID
+  Issues: 2 (E:2 W:0 I:0)
+    [ERROR] Referenced texture file not found
+      Context: Texture: textures\HAND_N .jpg (expected at: Assets/Models/Characters/rigged_hand/textures\HAND_N .jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+    [ERROR] Referenced texture file not found
+      Context: Texture: textures\\HAND_S.jpg (expected at: Assets/Models/Characters/rigged_hand/textures\\HAND_S.jpg)
+      Recommendation: Ensure all texture files exist in the same directory as the MTL file
+
+Asset: Assets/Models/Characters/rigged_hand/Rigged Hand.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Characters/rigged_hand/Rigged Hand.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Environment/tree/BarkDecidious0143_5_S.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/BarkDecidious0194_7_S.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/Leaves0120_35_S.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/Leaves0142_4_S.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/Leaves0156_1_S.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/Tree1.blend
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Blend file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Use Blender for detailed scene validation and compatibility checking
+
+Asset: Assets/Models/Environment/tree/Tree1.mtl
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Models/Environment/tree/Tree1.obj
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Models/Environment/tree/Tree1.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Models/Environment/tree/render1hdcool.png
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Textures/Materials/textures/Lowpoly_Laptop_1.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Textures/Materials/textures/Lowpoly_Laptop_2.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Textures/Materials/textures/Lowpoly_Laptop_Nor_1.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Textures/Materials/textures/Lowpoly_Laptop_Nor_2.jpg
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
+Asset: Assets/Textures/Materials/bus_game_map/uploads_files_2720101_BusGameMap.blend
+  Status: VALID
+  Issues: 1 (E:0 W:0 I:1)
+    [INFO] Blend file format validation completed
+      Context: Basic binary format check passed
+      Recommendation: Use Blender for detailed scene validation and compatibility checking
+
+Asset: Assets/Textures/Materials/bus_game_map/uploads_files_2720101_BusGameMap.obj
+  Status: INVALID
+  Issues: 2 (E:1 W:0 I:1)
+    [ERROR] Referenced MTL file not found
+      Context: MTL file: BusGameMap.mtl (expected at: Assets/Textures/Materials/bus_game_map/BusGameMap.mtl)
+      Recommendation: Ensure the MTL file exists in the same directory as the OBJ file
+    [INFO] Texture dependency checking enabled
+      Context: File: Assets/Textures/Materials/bus_game_map/uploads_files_2720101_BusGameMap.obj
+      Recommendation: Texture dependencies will be validated during format-specific validation
+
+Asset: Assets/Textures/Props/Notebook Low poly_2.PNG
+  Status: VALID
+  Issues: 0 (E:0 W:0 I:0)
+
