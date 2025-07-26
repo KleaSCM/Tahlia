@@ -38,19 +38,32 @@ pub fn build(b: *std.Build) void {
     const run_history_test_step = b.step("run-test-history", "Run the import history tests");
     run_history_test_step.dependOn(&run_history_test.step);
 
-    // Add PythonBridge test build
-    const python_bridge_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "-I", "/usr/include/python3.11", "-lpython3.11", "src/core/python_bridge.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "Tests/test_python_bridge.cpp", "-o", "zig-out/bin/test_python_bridge" });
-    python_bridge_test_compile.step.dependOn(&mkdir_step.step);
+    // Add PythonBridge test build (without Python - universal mode)
+    const python_bridge_test_compile = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "src/core/python_bridge.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "Tests/test_python_bridge.cpp", "-o", "zig-out/bin/test_python_bridge" });
 
-    const python_bridge_test_build_step = b.step("build-test-python-bridge", "Build the python bridge tests");
+    // Add PythonBridge test build (with Python - optional)
+    const python_bridge_test_compile_with_python = b.addSystemCommand(&.{ "zig", "c++", "-std=c++17", "-Wall", "-Wextra", "-I", "include", "-I", "Tests", "-I", "/usr/include/python3.13", "-lpython3.13", "-DTAHLIA_ENABLE_PYTHON", "src/core/python_bridge.cpp", "src/core/asset_manager.cpp", "src/core/asset_indexer.cpp", "src/core/import_manager.cpp", "src/core/material_manager.cpp", "src/core/import_history.cpp", "Tests/test_python_bridge.cpp", "-o", "zig-out/bin/test_python_bridge_with_python" });
+    python_bridge_test_compile.step.dependOn(&mkdir_step.step);
+    python_bridge_test_compile_with_python.step.dependOn(&mkdir_step.step);
+
+    const python_bridge_test_build_step = b.step("build-test-python-bridge", "Build the python bridge tests (universal)");
     python_bridge_test_build_step.dependOn(&python_bridge_test_compile.step);
+
+    const python_bridge_test_build_step_with_python = b.step("build-test-python-bridge-with-python", "Build the python bridge tests (with Python)");
+    python_bridge_test_build_step_with_python.dependOn(&python_bridge_test_compile_with_python.step);
 
     // Add run test step
     const run_python_bridge_test = b.addSystemCommand(&.{"zig-out/bin/test_python_bridge"});
     run_python_bridge_test.step.dependOn(&python_bridge_test_compile.step);
 
-    const run_python_bridge_test_step = b.step("run-test-python-bridge", "Run the python bridge tests");
+    const run_python_bridge_test_step = b.step("run-test-python-bridge", "Run the python bridge tests (universal)");
     run_python_bridge_test_step.dependOn(&run_python_bridge_test.step);
+
+    const run_python_bridge_test_with_python = b.addSystemCommand(&.{"zig-out/bin/test_python_bridge_with_python"});
+    run_python_bridge_test_with_python.step.dependOn(&python_bridge_test_compile_with_python.step);
+
+    const run_python_bridge_test_with_python_step = b.step("run-test-python-bridge-with-python", "Run the python bridge tests (with Python)");
+    run_python_bridge_test_with_python_step.dependOn(&run_python_bridge_test_with_python.step);
 
     import_test_compile.step.dependOn(&mkdir_step.step);
 

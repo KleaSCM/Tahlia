@@ -94,6 +94,7 @@ public:
     // Core initialization and setup
     bool initialize(const PythonModuleConfig& config = {});
     bool isInitialized() const;
+    bool isPythonAvailable() const;
     void cleanup();
 
     // Blender context management
@@ -161,9 +162,11 @@ private:
     std::function<void(const std::string&)> exception_handler_;
     std::string last_error_;
     bool initialized_;
+    bool python_available_;
     
     // Internal helpers
     void handlePythonException(const std::exception& e) const;
+    bool checkPythonAvailability();
     void captureBlenderState(BlenderContext& context) const;
     void restoreBlenderState(const BlenderContext& context);
     
