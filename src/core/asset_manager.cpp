@@ -26,6 +26,7 @@
 
 #include "../../include/asset_manager.hpp"
 #include "../../include/asset_indexer.hpp"
+#include "../../include/import_manager.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -46,10 +47,14 @@ namespace AssetManager {
  */
 AssetManager::AssetManager() 
     : initialized_(false)
-    , last_cache_update_(std::chrono::system_clock::now()) {
+    , last_cache_update_(std::chrono::system_clock::now())
+    , indexer_(std::make_unique<AssetIndexer>())
+    , import_manager_(std::make_unique<ImportManager>()) {
+    
+    // Initialize ImportManager with reference to this AssetManager
+    import_manager_->setAssetManager(std::shared_ptr<AssetManager>(this, [](AssetManager*){}));
     
     // Initialize core subsystems
-    indexer_ = std::make_unique<AssetIndexer>();
     // TODO: Initialize other subsystems when headers are created
     // validator_ = nullptr;
     // searcher_ = nullptr;
@@ -945,6 +950,30 @@ std::any AssetManager::deserialize_from_json(const std::string& json) const {
     }
     
     return std::any();
+}
+
+std::shared_ptr<ImportManager> AssetManager::getImportManager() const {
+    return std::shared_ptr<ImportManager>(import_manager_.get(), [](ImportManager*){});
+}
+
+ImportResult AssetManager::importAsset(const std::string& asset_path, const ImportOptions& options) {
+    return import_manager_->importAsset(asset_path, options);
+}
+
+std::vector<ImportResult> AssetManager::importAssetsGrid(const std::vector<std::string>& asset_paths, const ImportOptions& options, int rows, int cols, float spacing) {
+    return import_manager_->importAssetsGrid(asset_paths, options, rows, cols, spacing);
+}
+
+std::vector<ImportResult> AssetManager::importAssetsCircle(const std::vector<std::string>& asset_paths, const ImportOptions& options, float radius) {
+    return import_manager_->importAssetsCircle(asset_paths, options, radius);
+}
+
+std::vector<ImportResult> AssetManager::importAssetsLine(const std::vector<std::string>& asset_paths, const ImportOptions& options, float spacing) {
+    return import_manager_->importAssetsLine(asset_paths, options, spacing);
+}
+
+std::vector<ImportResult> AssetManager::importAssetsRandom(const std::vector<std::string>& asset_paths, const ImportOptions& options, int count, float area_size) {
+    return import_manager_->importAssetsRandom(asset_paths, options, count, area_size);
 }
 
 } // namespace AssetManager 

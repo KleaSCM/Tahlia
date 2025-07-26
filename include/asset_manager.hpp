@@ -10,7 +10,7 @@
  * - Modular asset management system with specialized subsystems
  * - High-performance asset discovery and indexing with intelligent caching
  * - Advanced material management with PBR texture mapping support
- * - Flexible import system with configurable options and bulk operations
+ * - Flexible import system with ImportManager for single and bulk operations
  * - Comprehensive validation and error reporting mechanisms
  * - Extensible design for new asset types and import handlers
  *
@@ -39,6 +39,7 @@
 #include <filesystem>
 #include <optional>
 #include <functional>
+#include "import_manager.hpp"
 
 namespace AssetManager {
 
@@ -47,7 +48,6 @@ class AssetIndexer;
 class AssetValidator;
 class AssetSearcher;
 class MaterialManager;
-class ImportManager;
 class CollectionManager;
 
 // Core data structures
@@ -134,11 +134,6 @@ public:
     std::vector<AssetInfo> search_by_name(const std::string& search_term) const;
     std::vector<AssetInfo> search_by_pattern(const std::string& pattern) const;
     
-    // Asset importing (returns JSON string for Python FFI)
-    std::string import_asset(const std::string& asset_path, const ImportOptions& options = {});
-    std::string import_assets_bulk(const std::vector<std::string>& asset_paths, const ImportOptions& options = {});
-    std::string import_assets_in_pattern(const std::vector<std::string>& asset_paths, const std::string& pattern, float spacing = 5.0f);
-    
     // Material management
     std::string create_material(const std::string& name, const std::string& material_type = "pbr");
     std::string create_material_with_texture(const std::string& name, const std::string& texture_path, const std::map<std::string, std::any>& properties = {});
@@ -169,13 +164,21 @@ public:
     std::string get_material_presets() const;
     bool is_asset_supported(const std::string& asset_path) const;
     
+    // ImportManager integration
+    std::shared_ptr<ImportManager> getImportManager() const;
+    ImportResult importAsset(const std::string& asset_path, const ImportOptions& options = {});
+    std::vector<ImportResult> importAssetsGrid(const std::vector<std::string>& asset_paths, const ImportOptions& options = {}, int rows = 1, int cols = 1, float spacing = 5.0f);
+    std::vector<ImportResult> importAssetsCircle(const std::vector<std::string>& asset_paths, const ImportOptions& options = {}, float radius = 10.0f);
+    std::vector<ImportResult> importAssetsLine(const std::vector<std::string>& asset_paths, const ImportOptions& options = {}, float spacing = 5.0f);
+    std::vector<ImportResult> importAssetsRandom(const std::vector<std::string>& asset_paths, const ImportOptions& options = {}, int count = 10, float area_size = 20.0f);
+    
 private:
     std::unique_ptr<AssetIndexer> indexer_;
+    std::unique_ptr<ImportManager> import_manager_;
     // TODO: Add other subsystems when implemented
     // std::unique_ptr<AssetValidator> validator_;
     // std::unique_ptr<AssetSearcher> searcher_;
     // std::unique_ptr<MaterialManager> material_manager_;
-    // std::unique_ptr<ImportManager> import_manager_;
     // std::unique_ptr<CollectionManager> collection_manager_;
     
     std::string assets_root_path_;
