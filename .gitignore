@@ -31,3 +31,9 @@ Thumbs.db
 
 # Ignore VSCode settings
 .vscode/ 
+
+# Ignore Assets directory (do not track large asset files)
+Assets/ 
+
+# Ignore Projects directory (do not track demo/user project files)
+Projects/ 
