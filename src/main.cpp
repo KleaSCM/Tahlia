@@ -210,7 +210,7 @@ int main(int argc, char* argv[]) {
         // Demonstrate material system capabilities
         std::cout << "\n🎨 Testing material system..." << std::endl;
         std::cout << "Available material presets:" << std::endl;
-        std::cout << manager.get_material_presets() << std::endl;
+        std::cout << "Material presets are now handled by MaterialManager" << std::endl;
         
         // Display supported file format information
         std::cout << "\n📄 Supported file formats:" << std::endl;

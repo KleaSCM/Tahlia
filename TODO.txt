@@ -1,7 +1,32 @@
+## 🧹 Stubs & Placeholders to Fully Implement
+- [x] Remove stub logic for linking in ImportManager (src/core/import_manager.cpp, canLinkAsset & importAsset)
+- [x] Replace stub/simulation message for linked assets in ImportManager (src/core/import_manager.cpp, importAsset)
+- [x] Replace stub/simulation message for AssetManager integration in ImportManager (src/core/import_manager.cpp, importAsset)
+- [x] Replace basic validation note with real logic in AssetValidator (src/core/asset_validator.cpp)
+- [x] Replace informational note about Blend file validation with real logic in AssetValidator (src/core/asset_validator.cpp)
+- [x] Remove 'Additional metadata for future FBX SDK integration' and 'Placeholder for FBX SDK features' in AssetIndexer (src/core/asset_indexer.cpp, extract_fbx_metadata)
+- [x] Remove 'Additional metadata for future Blender Python API integration' and 'Placeholder for Blender Python API features' in AssetIndexer (src/core/asset_indexer.cpp, extract_blend_metadata)
+- [x] Replace stub/mock AssetManager in test_import_manager.cpp with a more functional mock (Tests/test_import_manager.cpp)
+- [x] Remove test for 'not yet implemented' message in test_import_manager.cpp (Tests/test_import_manager.cpp)
+- [x] Replace Catch2 with simple test harness to eliminate external dependencies (Tests/test_harness.hpp, Tests/test_import_manager.cpp)
+
 # Blender Asset Manager C++ TODO List
 # Author: KleaSCM
 # Email: KleaSCM@gmail.com
 # Description: Modular, tickable TODO list for project features and architecture
+
+## 🛠️ Codebase TODOs (from code comments)
+- [x] Implement single asset import logic (src/core/import_manager.cpp, importAsset)
+- [x] Implement grid pattern bulk import (src/core/import_manager.cpp, importAssetsGrid)
+- [x] Implement circle pattern bulk import (src/core/import_manager.cpp, importAssetsCircle)
+- [x] Implement line pattern bulk import (src/core/import_manager.cpp, importAssetsLine)
+- [x] Implement random pattern bulk import (src/core/import_manager.cpp, importAssetsRandom)
+- [x] Implement logic to determine if asset can be linked (src/core/import_manager.cpp, canLinkAsset)
+- [x] Initialize other subsystems when headers are created (src/core/asset_manager.cpp)
+- [x] Add other subsystems when implemented (include/asset_manager.hpp)
+- [x] Implement full FBX metadata extraction using FBX SDK (src/core/asset_indexer.cpp, extract_fbx_metadata)
+- [x] Implement full Blender metadata extraction using Blender Python API (src/core/asset_indexer.cpp, extract_blend_metadata)
+- [x] Implement material file dependency analysis for various formats (src/core/asset_indexer.cpp, find_material_dependencies)
 
 ## ✅ Completed
 - [x] Fast asset indexing and scanning (C++)
@@ -27,10 +52,10 @@
     - [ ] Linking vs. importing assets
 
 
-- [ ] Material handling module (MaterialManager)
-    - [ ] Material creation (PBR, quick setup, auto-assign)
-    - [ ] Texture loading and assignment
-    - [ ] PBR material creation with multiple maps
+- [x] Material handling module (MaterialManager)
+    - [x] Material creation (PBR, quick setup, auto-assign)
+    - [x] Texture loading and assignment
+    - [x] PBR material creation with multiple maps
 
 
 - [ ] Import history module (ImportHistory)

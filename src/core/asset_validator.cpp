@@ -365,14 +365,32 @@ namespace AssetManager {
                     "This might be a text-based FBX file or corrupted binary file");
         }
         
+        // Additional FBX-specific validations
+        // Check for FBX version (bytes 23-26)
+        file.seekg(23);
+        unsigned int version = 0;
+        file.read(reinterpret_cast<char*>(&version), sizeof(version));
+        if (version < 6000 || version > 8000) {
+            addIssue(result, ValidationSeverity::WARNING,
+                    "FBX version is outside common range (6000-8000)",
+                    "Version: " + std::to_string(version),
+                    "Check compatibility with your 3D software");
+        } else {
+            addIssue(result, ValidationSeverity::INFO,
+                    "FBX version detected",
+                    "Version: " + std::to_string(version),
+                    "Version appears to be within a common range");
+        }
+        // Check for possible file corruption (file size)
+        file.seekg(0, std::ios::end);
+        std::streampos file_size = file.tellg();
+        if (file_size < 1024) {
+            addIssue(result, ValidationSeverity::ERROR,
+                    "FBX file is suspiciously small",
+                    "File size: " + std::to_string(file_size) + " bytes",
+                    "File may be incomplete or corrupted");
+        }
         file.close();
-        
-        // Additional FBX-specific validations could be added here
-        // For now, we'll add a basic validation note
-        addIssue(result, ValidationSeverity::INFO,
-                "FBX file format validation completed",
-                "Basic binary format check passed",
-                "Consider using specialized FBX tools for detailed validation");
     }
 
     // Blend file validation
@@ -385,11 +403,9 @@ namespace AssetManager {
                     "Check file permissions and accessibility");
             return;
         }
-        
         // Read Blend file header (first 12 bytes)
         char header[12];
         file.read(header, 12);
-        
         if (file.gcount() < 12) {
             addIssue(result, ValidationSeverity::ERROR,
                     "Blend file is too small to be valid",
@@ -398,7 +414,6 @@ namespace AssetManager {
             file.close();
             return;
         }
-        
         // Check Blend file signature
         std::string signature(header, 7);
         if (signature != "BLENDER") {
@@ -406,15 +421,27 @@ namespace AssetManager {
                     "Invalid Blend file signature",
                     "Expected: BLENDER, Found: " + signature,
                     "This file may not be a valid Blender file");
+        } else {
+            // Extract pointer size and endianness
+            char pointer_size = header[7];
+            char endianness = header[8];
+            char version[3] = {header[9], header[10], header[11]};
+            std::string version_str(version, 3);
+            addIssue(result, ValidationSeverity::INFO,
+                    "Blend file version detected",
+                    "Version: " + version_str,
+                    "Pointer size: " + std::string((pointer_size == '_') ? "32-bit" : "64-bit") + ", Endianness: " + ((endianness == 'v') ? "Little" : "Big"));
         }
-        
+        // Check for possible file corruption (file size)
+        file.seekg(0, std::ios::end);
+        std::streampos file_size = file.tellg();
+        if (file_size < 1024) {
+            addIssue(result, ValidationSeverity::ERROR,
+                    "Blend file is suspiciously small",
+                    "File size: " + std::to_string(file_size) + " bytes",
+                    "File may be incomplete or corrupted");
+        }
         file.close();
-        
-        // Add informational note about Blend file validation
-        addIssue(result, ValidationSeverity::INFO,
-                "Blend file format validation completed",
-                "Basic binary format check passed",
-                "Use Blender for detailed scene validation and compatibility checking");
     }
 
     // MTL file validation

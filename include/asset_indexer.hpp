@@ -109,6 +109,7 @@ private:
     std::map<std::string, std::any> extract_blend_metadata(const std::filesystem::path& file_path) const;
     std::vector<std::string> find_obj_dependencies(const std::filesystem::path& file_path) const;
     std::vector<std::string> find_material_dependencies(const std::filesystem::path& file_path) const;
+    void add_texture_dependency(const std::string& texture_path, const std::filesystem::path& material_file_path, std::vector<std::string>& dependencies) const;
 };
 
 } // namespace AssetManager 

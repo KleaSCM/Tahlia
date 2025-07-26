@@ -40,6 +40,7 @@
 #include <optional>
 #include <functional>
 #include "import_manager.hpp"
+#include "material_manager.hpp"
 
 namespace AssetManager {
 
@@ -65,20 +66,6 @@ struct AssetInfo {
     std::vector<std::string> warnings;
 };
 
-struct ImportOptions {
-    std::tuple<float, float, float> location = {0.0f, 0.0f, 0.0f};
-    std::tuple<float, float, float> rotation = {0.0f, 0.0f, 0.0f};
-    std::tuple<float, float, float> scale = {1.0f, 1.0f, 1.0f};
-    bool import_materials = true;
-    bool import_animations = true;
-    bool import_cameras = false;
-    bool import_lights = false;
-    bool merge_objects = false;
-    bool auto_smooth = true;
-    std::string collection_name;
-    bool link_instead_of_import = false;
-};
-
 struct SearchFilters {
     std::string search_term;
     std::string asset_type;
@@ -89,15 +76,7 @@ struct SearchFilters {
     std::chrono::system_clock::time_point modified_before;
 };
 
-struct MaterialPreset {
-    std::string name;
-    float metallic = 0.0f;
-    float roughness = 0.5f;
-    std::tuple<float, float, float, float> base_color = {0.8f, 0.8f, 0.8f, 1.0f};
-    float transmission = 0.0f;
-    float ior = 1.45f;
-    std::map<std::string, std::any> additional_properties;
-};
+// MaterialPreset is now defined in material_manager.hpp
 
 struct ImportHistoryEntry {
     std::string asset_path;
@@ -135,10 +114,7 @@ public:
     std::vector<AssetInfo> search_by_pattern(const std::string& pattern) const;
     
     // Material management
-    std::string create_material(const std::string& name, const std::string& material_type = "pbr");
-    std::string create_material_with_texture(const std::string& name, const std::string& texture_path, const std::map<std::string, std::any>& properties = {});
-    std::string create_pbr_material(const std::string& name, const std::map<std::string, std::string>& texture_paths);
-    std::string quick_material_setup(const std::string& material_type, const std::string& name);
+    // Material creation methods are now handled by MaterialManager
     
     // Collection management
     std::string create_collection(const std::string& name, const std::vector<std::string>& asset_paths = {});
@@ -161,7 +137,7 @@ public:
     
     // Utility functions
     std::string get_supported_formats() const;
-    std::string get_material_presets() const;
+    // Material presets are now handled by MaterialManager
     bool is_asset_supported(const std::string& asset_path) const;
     
     // ImportManager integration
@@ -175,15 +151,22 @@ public:
 private:
     std::unique_ptr<AssetIndexer> indexer_;
     std::unique_ptr<ImportManager> import_manager_;
-    // TODO: Add other subsystems when implemented
+    std::unique_ptr<MaterialManager> material_manager_;
+    // TODO: Add other subsystems when implemented (DONE)
     // std::unique_ptr<AssetValidator> validator_;
     // std::unique_ptr<AssetSearcher> searcher_;
     // std::unique_ptr<MaterialManager> material_manager_;
     // std::unique_ptr<CollectionManager> collection_manager_;
     
+    // Subsystem member variables for future implementation
+    // std::unique_ptr<AssetValidator> validator_;      // Asset validation subsystem
+    // std::unique_ptr<AssetSearcher> searcher_;        // Advanced search subsystem
+    // std::unique_ptr<MaterialManager> material_manager_; // Material management subsystem
+    // std::unique_ptr<CollectionManager> collection_manager_; // Collection management subsystem
+    
     std::string assets_root_path_;
     std::vector<ImportHistoryEntry> import_history_;
-    std::map<std::string, MaterialPreset> material_presets_;
+    // Material presets are now handled by MaterialManager
     std::map<std::string, std::string> import_handlers_;
     std::map<std::string, std::vector<std::string>> pbr_texture_mappings_;
     
@@ -191,7 +174,7 @@ private:
     std::chrono::system_clock::time_point last_cache_update_;
     
     // Private helper methods
-    void initialize_material_presets();
+    // Material presets are now handled by MaterialManager
     void initialize_import_handlers();
     void initialize_pbr_mappings();
     std::string serialize_to_json(const std::any& data) const;

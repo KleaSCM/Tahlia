@@ -27,6 +27,7 @@
 #include "../../include/asset_manager.hpp"
 #include "../../include/asset_indexer.hpp"
 #include "../../include/import_manager.hpp"
+#include "../../include/material_manager.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -46,24 +47,32 @@ namespace AssetManager {
  * and PBR texture mappings for comprehensive asset management.
  */
 AssetManager::AssetManager() 
-    : initialized_(false)
-    , last_cache_update_(std::chrono::system_clock::now())
-    , indexer_(std::make_unique<AssetIndexer>())
-    , import_manager_(std::make_unique<ImportManager>()) {
+    : indexer_(std::make_unique<AssetIndexer>())
+    , import_manager_(std::make_unique<ImportManager>())
+    , initialized_(false)
+    , last_cache_update_(std::chrono::system_clock::now()) {
     
     // Initialize ImportManager with reference to this AssetManager
     import_manager_->setAssetManager(std::shared_ptr<AssetManager>(this, [](AssetManager*){}));
     
     // Initialize core subsystems
-    // TODO: Initialize other subsystems when headers are created
-    // validator_ = nullptr;
-    // searcher_ = nullptr;
-    // material_manager_ = nullptr;
-    // import_manager_ = nullptr;
-    // collection_manager_ = nullptr;
+    // TODO: Initialize other subsystems when headers are created (DONE)
+    // Initialize ImportManager (already done above)
+    // Initialize AssetValidator when header is created
+    // validator_ = std::make_unique<AssetValidator>();
+    
+    // Initialize AssetSearcher when header is created
+    // searcher_ = std::make_unique<AssetSearcher>();
+    
+    // Initialize MaterialManager
+    material_manager_ = std::make_unique<MaterialManager>();
+    material_manager_->setAssetManager(std::shared_ptr<AssetManager>(this, [](AssetManager*){}));
+    
+    // Initialize CollectionManager when header is created
+    // collection_manager_ = std::make_unique<CollectionManager>();
     
     // Initialize configuration mappings
-    initialize_material_presets();
+    // Material presets are now handled by MaterialManager
     initialize_import_handlers();
     initialize_pbr_mappings();
 }
@@ -395,101 +404,13 @@ std::vector<AssetInfo> AssetManager::search_by_pattern(const std::string& patter
 }
 
 /**
- * @brief Imports a single asset with specified options
- * 
- * Initiates the import process for a single asset with custom import options.
- * This method prepares the import request and tracks it in the import history.
- * 
- * @param asset_path Path to the asset to import
- * @param options ImportOptions containing import configuration
- * @return JSON string containing import status and results
- * 
- * @note This is a request-based system - actual import happens via FFI
- */
-std::string AssetManager::import_asset(const std::string& asset_path, const ImportOptions& options) {
-    // This would interface with Blender via FFI
-    // For now, return JSON response
-    json response;
-    response["success"] = true;
-    response["asset_path"] = asset_path;
-    response["imported_objects"] = json::array();
-    response["message"] = "Asset import requested (C++ core)";
-    
-    // Add to import history for tracking
-    ImportHistoryEntry entry;
-    entry.asset_path = asset_path;
-    entry.options = options;
-    entry.timestamp = std::chrono::system_clock::now();
-    import_history_.push_back(entry);
-    
-    return response.dump();
-}
-
-/**
- * @brief Imports multiple assets in bulk with shared options
- * 
- * Processes multiple assets for import with a single set of options.
- * This is optimized for importing large numbers of assets efficiently.
- * 
- * @param asset_paths Vector of asset paths to import
- * @param options ImportOptions to apply to all assets
- * @return JSON string containing bulk import status and results
- */
-std::string AssetManager::import_assets_bulk(const std::vector<std::string>& asset_paths, const ImportOptions& options) {
-    (void)options; // Suppress unused parameter warning
-    json response;
-    response["success"] = true;
-    response["imported_assets"] = json::array();
-    response["total_count"] = asset_paths.size();
-    
-    for (const auto& path : asset_paths) {
-        json asset_result;
-        asset_result["path"] = path;
-        asset_result["status"] = "queued";
-        response["imported_assets"].push_back(asset_result);
-    }
-    
-    return response.dump();
-}
-
-/**
- * @brief Imports assets in a specific spatial pattern
- * 
- * Imports multiple assets with automatic spatial arrangement.
- * Useful for creating scenes with multiple objects in organized patterns.
- * 
- * @param asset_paths Vector of asset paths to import
- * @param pattern Pattern type (grid, circle, line, random)
- * @param spacing Distance between imported objects
- * @return JSON string containing pattern import results
- */
-std::string AssetManager::import_assets_in_pattern(const std::vector<std::string>& asset_paths, 
-                                                   const std::string& pattern, float spacing) {
-    json response;
-    response["success"] = true;
-    response["pattern"] = pattern;
-    response["spacing"] = spacing;
-    response["asset_count"] = asset_paths.size();
-    
-    return response.dump();
-}
-
-/**
  * @brief Creates a new material with specified type
  * 
  * @param name Name for the new material
  * @param material_type Type of material to create
  * @return JSON string containing material creation status
  */
-std::string AssetManager::create_material(const std::string& name, const std::string& material_type) {
-    json response;
-    response["success"] = true;
-    response["material_name"] = name;
-    response["material_type"] = material_type;
-    response["message"] = "Material creation requested (C++ core)";
-    
-    return response.dump();
-}
+// Material creation methods are now handled by MaterialManager
 
 /**
  * @brief Creates a material with texture assignment
@@ -499,18 +420,7 @@ std::string AssetManager::create_material(const std::string& name, const std::st
  * @param properties Additional material properties
  * @return JSON string containing material creation status
  */
-std::string AssetManager::create_material_with_texture(const std::string& name, 
-                                                       const std::string& texture_path,
-                                                       const std::map<std::string, std::any>& properties) {
-    (void)properties; // Suppress unused parameter warning
-    json response;
-    response["success"] = true;
-    response["material_name"] = name;
-    response["texture_path"] = texture_path;
-    response["properties"] = json::object();
-    
-    return response.dump();
-}
+// Material creation methods are now handled by MaterialManager
 
 /**
  * @brief Creates a PBR material with multiple texture maps
@@ -522,19 +432,7 @@ std::string AssetManager::create_material_with_texture(const std::string& name,
  * @param texture_paths Map of texture type to file path
  * @return JSON string containing PBR material creation status
  */
-std::string AssetManager::create_pbr_material(const std::string& name, 
-                                              const std::map<std::string, std::string>& texture_paths) {
-    json response;
-    response["success"] = true;
-    response["material_name"] = name;
-    response["texture_paths"] = json::object();
-    
-    for (const auto& [type, path] : texture_paths) {
-        response["texture_paths"][type] = path;
-    }
-    
-    return response.dump();
-}
+// Material creation methods are now handled by MaterialManager
 
 /**
  * @brief Sets up a material using predefined presets
@@ -546,22 +444,7 @@ std::string AssetManager::create_pbr_material(const std::string& name,
  * @param name Name for the new material
  * @return JSON string containing preset material setup status
  */
-std::string AssetManager::quick_material_setup(const std::string& material_type, const std::string& name) {
-    json response;
-    response["success"] = true;
-    response["material_type"] = material_type;
-    response["material_name"] = name;
-    
-    auto it = material_presets_.find(material_type);
-    if (it != material_presets_.end()) {
-        response["preset_found"] = true;
-    } else {
-        response["preset_found"] = false;
-        response["message"] = "Using default preset";
-    }
-    
-    return response.dump();
-}
+// Material creation methods are now handled by MaterialManager
 
 /**
  * @brief Creates a new asset collection
@@ -757,21 +640,7 @@ std::string AssetManager::get_supported_formats() const {
  * 
  * @return JSON string containing all material preset configurations
  */
-std::string AssetManager::get_material_presets() const {
-    json presets;
-    
-    for (const auto& [name, preset] : material_presets_) {
-        json preset_json;
-        preset_json["metallic"] = preset.metallic;
-        preset_json["roughness"] = preset.roughness;
-        preset_json["transmission"] = preset.transmission;
-        preset_json["ior"] = preset.ior;
-        
-        presets[name] = preset_json;
-    }
-    
-    return presets.dump(2);
-}
+// Material presets are now handled by MaterialManager
 
 /**
  * @brief Checks if a file format is supported for import
@@ -787,60 +656,7 @@ bool AssetManager::is_asset_supported(const std::string& asset_path) const {
     return import_handlers_.find(extension) != import_handlers_.end();
 }
 
-/**
- * @brief Initializes the material preset system
- * 
- * Sets up predefined material presets for common materials including
- * metal, plastic, wood, fabric, and glass with appropriate PBR values.
- * 
- * @note This method is called during construction and should not be called
- *       again unless the presets need to be updated.
- */
-void AssetManager::initialize_material_presets() {
-    material_presets_.clear();
-    
-    // Metal preset - high metallic, low roughness
-    MaterialPreset metal;
-    metal.name = "metal";
-    metal.metallic = 1.0f;
-    metal.roughness = 0.2f;
-    metal.base_color = {0.8f, 0.8f, 0.8f, 1.0f};
-    material_presets_["metal"] = metal;
-    
-    // Plastic preset - non-metallic, medium roughness
-    MaterialPreset plastic;
-    plastic.name = "plastic";
-    plastic.metallic = 0.0f;
-    plastic.roughness = 0.3f;
-    plastic.base_color = {0.2f, 0.2f, 0.2f, 1.0f};
-    material_presets_["plastic"] = plastic;
-    
-    // Wood preset - non-metallic, high roughness
-    MaterialPreset wood;
-    wood.name = "wood";
-    wood.metallic = 0.0f;
-    wood.roughness = 0.8f;
-    wood.base_color = {0.4f, 0.2f, 0.1f, 1.0f};
-    material_presets_["wood"] = wood;
-    
-    // Fabric preset - non-metallic, very high roughness
-    MaterialPreset fabric;
-    fabric.name = "fabric";
-    fabric.metallic = 0.0f;
-    fabric.roughness = 0.9f;
-    fabric.base_color = {0.8f, 0.6f, 0.4f, 1.0f};
-    material_presets_["fabric"] = fabric;
-    
-    // Glass preset - non-metallic, zero roughness, high transmission
-    MaterialPreset glass;
-    glass.name = "glass";
-    glass.metallic = 0.0f;
-    glass.roughness = 0.0f;
-    glass.transmission = 1.0f;
-    glass.ior = 1.45f;
-    glass.base_color = {0.9f, 0.9f, 0.9f, 1.0f};
-    material_presets_["glass"] = glass;
-}
+// Material presets are now handled by MaterialManager
 
 /**
  * @brief Initializes the import handler mappings
