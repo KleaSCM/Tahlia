@@ -235,10 +235,6 @@ clear_import_history()
 - **Import for custom edits**: Make it your own, babe!
 - **Check your import history**: Never lose track of what you’ve added!
 
-## 🏳️‍🌈 Sapphic Power for Blender Babes
-
-This system is made for creative, passionate, and super-feminine Blender girls who want to work fast, stay organized, and make beautiful things together! 💕✨
-
 ---
 
 **Version**: 1.0.0  
