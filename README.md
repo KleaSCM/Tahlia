@@ -1,13 +1,13 @@
 # Blender Universal Asset Management System
 
-**Author**: KleaSCM  
-**Email**: KleaSCM@gmail.com  
 **Version**: 1.0.0  
-**License**: MIT
+**Last Updated**: July 26, 2025  
+**Author**: KleaSCM  
+**Email**: KleaSCM@gmail.com 
 
 A universal asset management system for Blender projects that can handle ANY file type, ANY size, and ANY directory structure. Designed for individual artists, teams, and enterprise-level studios.
 
-## 🎨 How It Works
+##  How It Works
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -73,7 +73,7 @@ blender-asset-manager/
     └── example_city/    # Example project
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -142,7 +142,7 @@ blender-asset-manager/
     └── example_city/    # Example project
 ```
 
-## 🎯 Universal Features
+## Universal Features
 
 ### Universal Asset Access
 - **One Import**: `from utils import *` gives you everything
@@ -175,7 +175,7 @@ blender-asset-manager/
 - **Quick Material Setup**: One-click creation of metal, wood, glass, etc.
 - **Link vs Import**: Choose between linking (reference) or importing (copy)
 
-## 📖 Usage Examples
+## Usage Examples
 
 ### Advanced Importing
 
@@ -226,7 +226,3 @@ clear_import_history()
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: July 26, 2025  
-**Author**: KleaSCM  
-**Email**: KleaSCM@gmail.com 
