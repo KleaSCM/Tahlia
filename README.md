@@ -224,17 +224,6 @@ history = get_import_history()
 clear_import_history()
 ```
 
-## 🧁 Girly Tips & Best Practices
-
-- **Validate before importing**: Always check your assets for missing files or issues!
-- **Use collections**: Keep your scenes organized and cute!
-- **Batch import**: Build cities, forests, or armies in seconds!
-- **Smart materials**: Let the system auto-assign or create beautiful materials for you!
-- **Quick material setup**: One-click for metal, wood, glass, and more!
-- **Link for shared assets**: Save memory and keep things tidy!
-- **Import for custom edits**: Make it your own, babe!
-- **Check your import history**: Never lose track of what you’ve added!
-
 ---
 
 **Version**: 1.0.0  
