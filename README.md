@@ -5,7 +5,7 @@
 **Version**: 1.0.0  
 **License**: MIT
 
-A universal, production-level asset management system for Blender projects that can handle ANY file type, ANY size, and ANY directory structure. Designed for individual artists, teams, and enterprise-level studios.
+A universal asset management system for Blender projects that can handle ANY file type, ANY size, and ANY directory structure. Designed for individual artists, teams, and enterprise-level studios.
 
 ## 🎨 How It Works
 
